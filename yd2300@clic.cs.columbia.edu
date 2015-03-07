@@ -31,7 +31,8 @@ public class client_chat_room implements Runnable{
 			String [] temp_sub = null;
 			try {
 				stdin = this.user_input.readLine();
-				
+				String stdin_sub = new String(stdin);
+				temp_sub = stdin_sub.split("\\s+");
 
 				System.out.print(">");
 
@@ -51,8 +52,7 @@ public class client_chat_room implements Runnable{
 			}
 
 
-			String stdin_sub = new String(stdin);
-			temp_sub = stdin_sub.split("\\s+");
+
 			if(temp_sub[0].equals("private")){
 				String receiver = temp_sub[1];
 				int receiver_index = stdin.indexOf(receiver, temp_sub[0].length());
@@ -121,7 +121,7 @@ public class client_chat_room implements Runnable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					System.out.println("the host address of receiver has changed");
+					System.out.println("come here----->");
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

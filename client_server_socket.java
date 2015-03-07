@@ -35,9 +35,23 @@ public class client_server_socket implements Runnable{
 				BufferedReader socket_input = new BufferedReader(temp);
 				String line;
 				while ((line = socket_input.readLine())!=null){
-					System.out.println(">" + line);
-					if(this.client_socket.getInetAddress().getHostAddress().equals(server_ip)&&this.client_socket.getPort() == server_port &&line.equals("log in from other IP address, force to log off")){
+					System.out.println("> hihihih" + line);
+					if(!(this.client_socket.getInetAddress().getHostAddress().equals(server_ip)&&this.client_socket.getPort() == server_port)){
+						System.out.println("the server_ip is " + server_ip);
+						System.out.println("the server_port is " + server_port);
+						System.out.println("the client_socket.getInetAddress().getHostAddress() is " + this.client_socket.getInetAddress().getHostAddress());
+						System.out.println("theclient_socket.getPort()is " + client_socket.getPort());
+						
+						
+						System.out.println("it is   fasdfsafsdafsadf");
+					}
+					if((this.client_socket.getInetAddress().getHostAddress().equals(server_ip)&&this.client_socket.getPort() == server_port)){
+						System.out.println("it is   right xxxxxxxxxxf");
+					}
+					if(this.client_socket.getInetAddress().getHostAddress().equals(server_ip) &&line.equals("log in from other IP address, force to log off")){
 						try {
+							System.out.println("come here to shut down");
+							client_socket.close();
 							this.server_socket.close();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block

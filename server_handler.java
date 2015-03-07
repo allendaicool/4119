@@ -298,7 +298,9 @@ public class server_handler implements Runnable{
 			}
 		}
 
-		if(!current_user.containsKey(user) || (System.currentTimeMillis()-(current_user.get(user))/milli_to_second)>time_out ){
+		if(!current_user.containsKey(user) || ((System.currentTimeMillis()-current_user.get(user))/milli_to_second) >time_out ){
+			
+			
 			if(!user_passwd.containsKey(user)){
 				try {
 					socket_output.writeBytes("user name does not exist");
@@ -311,6 +313,7 @@ public class server_handler implements Runnable{
 			if(handle_login(user,password, reader, socket_output, client_server_port,client_server_ip)){
 				System.out.println(user +"has logged in");
 				check_send_offline_msg(user);
+				
 				return success_log_in;
 			}
 			try {
@@ -322,7 +325,6 @@ public class server_handler implements Runnable{
 			return fail_log_in;
 		}
 		else{
-
 			if (checkDifferentIP(user)){
 				String message = "log in from other IP address, force to log off\n";
 				send_msg_to_user(user,message);

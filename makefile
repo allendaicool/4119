@@ -7,7 +7,6 @@ JC = javac
 CLASSES = \
        	Authenticate.java\
 	client_chat_room.java\
-        client_socket.java\
         Client.java\
         server_handler.java\
 	Server.java\
