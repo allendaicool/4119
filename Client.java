@@ -1,5 +1,6 @@
 //package socketProgramming;
 import java.net.*;
+import java.util.HashMap;
 import java.io.*;
 
 public class Client {
@@ -23,40 +24,49 @@ public class Client {
 		this.port_num = port_num;
 		this.ip_address = new String(ip_address);
 	}
-	
-	
+
+
 	public static void main(String[] args) throws Exception{
 		if(args.length != 2){
 			throw new Exception("invalid number of arguments");
 		}
-		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+		//BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 		Client user = new Client(Integer.parseInt(args[1]),args[0]);
 
 		String ip = args[0];
 		String port = args[1];
-		
+
 		user.set_up_client_server(ip,port, user);
+
+
+
+
+
+
 		client_chat_room group_chat = new client_chat_room(ip,Integer.valueOf(port),user.userName);
+
+
+
 		client_server_socket client_serv_socket = new client_server_socket(user.server_socket, ip,Integer.parseInt(port));
 		client_heart_beat heartbeat = new client_heart_beat(ip,Integer.parseInt(port),user.userName);
 
 		group_chat.start();
 		client_serv_socket.start();
 		heartbeat.start();
-		
+
 		group_chat.t.join();
 		client_serv_socket.t.join();
 		heartbeat.t.join();
-		
+
 	}
 
 
 	private  void set_up_client_server (String arg0, String arg1,Client user) {
-		
+
 		//user = new Client (Integer.parseInt(arg1),arg0);
-		
+
 		InetAddress local = null;
-		
+
 		try {
 			user.server_socket = new ServerSocket(0);
 			user.client_port_num = user.server_socket.getLocalPort();
@@ -65,7 +75,7 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		user.client_serverSocket_ip = local.getHostAddress();
 		user.authentication(user.client_serverSocket_ip,user.client_port_num);
 	}
@@ -73,7 +83,6 @@ public class Client {
 
 
 	private void authentication(String client_ip_address, int client_port_num){
-		
 		InputStreamReader temp = null;
 		BufferedReader socket_input = null;
 		DataOutputStream socket_output = null;
@@ -88,40 +97,51 @@ public class Client {
 					new DataOutputStream(client_sock.getOutputStream());
 			stdin = new BufferedReader(new InputStreamReader(System.in));
 
+
 			System.out.print("Username: ");
 			userName = stdin.readLine().trim();
 			System.out.println();
 
 			System.out.print("Password:");
 			String password = stdin.readLine().trim();
-			
-			
+
+
 			String writeout = "Toauth"+" "+userName+" "+ password+" " + String.valueOf(client_port_num) + " " + client_ip_address;
 			socket_output.writeBytes(writeout+"\n");
 			System.out.println("Toauth"+" "+userName+" "+ password);
 			//socket_output.flush();
 			String line = socket_input.readLine();
-			System.out.println("come here");
-			if (line.equals(already_block_by_server)){
+
+			if(line.equals("user name does not exist")){
 				System.out.println(line);
 				System.exit(0);
 			}
-			while(!line.equals(block_by_server) &&!line.equals(welcome_message) ){
-				System.out.println(line);
-				System.out.print("Password:");
-				password = stdin.readLine().trim();
-				socket_output.writeBytes(password+"\n");
-				//socket_output.flush();
-				line = socket_input.readLine();
+			else{
+				System.out.println("come here");
+				if (line.equals(already_block_by_server)){
+					System.out.println(line);
+					System.exit(0);
+				}
+				while(!line.equals(block_by_server) &&!line.equals(welcome_message) ){
+					System.out.println(line);
+					System.out.print("Password:");
+					password = stdin.readLine().trim();
+					socket_output.writeBytes(password+"\n");
+					//socket_output.flush();
+					line = socket_input.readLine();
+				}
+
+				if (line.equals(block_by_server) ){
+					System.out.println(line);
+					System.exit(0); 
+				}
+				if(line.equals(welcome_message)){
+					System.out.println(line);
+				}
+				if(line.equals("unknown error"))
+					System.out.println(line);
 			}
-			
-			if (line.equals(block_by_server) ){
-				System.out.println(line);
-				System.exit(0); 
-			}
-			if(line.equals(welcome_message)){
-				System.out.println(line);
-			}
+
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -136,7 +156,7 @@ public class Client {
 				temp.close();
 				socket_input.close();
 				socket_output.close();
-				
+
 				//@lfred
 				//stdin.close();
 

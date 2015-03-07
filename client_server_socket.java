@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class client_server_socket implements Runnable{
 	public Thread t;
@@ -44,6 +45,7 @@ public class client_server_socket implements Runnable{
 						}
 						System.exit(0);
 					}
+					
 				}
 				System.out.print("> ");
 				temp.close();
@@ -61,7 +63,7 @@ public class client_server_socket implements Runnable{
 		}
 	}
 	
-	public client_server_socket (ServerSocket server_socket, String ip, int port) {
+	public client_server_socket ( ServerSocket server_socket, String ip, int port) {
 		
 		if (server_socket == null)
 			System.out.println ("NULL POINTER");

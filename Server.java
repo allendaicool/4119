@@ -16,6 +16,7 @@ public class Server {
 	public static ConcurrentHashMap<String,String> current_user_ip = new ConcurrentHashMap<String,String>();
 	public static ConcurrentHashMap<String,IP_port_tuple> user_ip_port = new ConcurrentHashMap<String,IP_port_tuple>();
 	public static ConcurrentHashMap<String, ArrayList<String>> off_line_msg = new ConcurrentHashMap<String,ArrayList<String>>();
+	public static ConcurrentHashMap<String,ArrayList<String>> user_black_list = new ConcurrentHashMap<String,ArrayList<String>>();
 	public static void main(String[] args) throws Exception{
 		if(args.length != 1){
 			System.out.println("invalid number of arguments");
@@ -35,13 +36,13 @@ public class Server {
             client_socket = server_socket.accept();
             
             System.out.println("server has accepted connection");
-            System.out.println("local address is " + client_socket.getLocalAddress().getHostAddress());
-			System.out.println("local port num is " + client_socket.getLocalPort());
-			System.out.println("remote ip address is " + client_socket.getInetAddress().getHostAddress());
-			System.out.println("remote port num is " + client_socket.getPort());
+            //System.out.println("local address is " + client_socket.getLocalAddress().getHostAddress());
+			//System.out.println("local port num is " + client_socket.getLocalPort());
+			//System.out.println("remote ip address is " + client_socket.getInetAddress().getHostAddress());
+			//System.out.println("remote port num is " + client_socket.getPort());
 			
             
-            server_handler handle = new server_handler(off_line_msg,current_user_ip,user_ip_port,user_passwd,blocked_by_server,current_user,client_socket);
+            server_handler handle = new server_handler(user_black_list,off_line_msg,current_user_ip,user_ip_port,user_passwd,blocked_by_server,current_user,client_socket);
            
             handle.start();
             

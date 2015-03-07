@@ -30,7 +30,6 @@ public class client_heart_beat implements Runnable{
 		
 		while(this.running){
 			try {
-				
 				client_heart_socket = new Socket(ip_address,port_num);
 				socket_output =
 						new DataOutputStream(client_heart_socket.getOutputStream());
@@ -51,8 +50,6 @@ public class client_heart_beat implements Runnable{
 				e.printStackTrace();
 			}
 		}
-
-
 	}
 
 	public client_heart_beat(String ip_address, int port_num, String username){
